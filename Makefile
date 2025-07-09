@@ -8,4 +8,4 @@ help:
 .PHONY: ex01
 ex01: ## ex01
 	@go build -o ./bin/ ./ex01/quiz-master/exercise
-	@./bin/ex01 -csv ./ex01/quiz-master/exercise/problems.csv
+	./bin/ex01 -csv ./ex01/quiz-master/exercise/problems.csv -limit 10
