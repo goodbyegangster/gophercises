@@ -8,4 +8,9 @@ help:
 .PHONY: ex01
 ex01: ## ex01
 	@go build -o ./bin/ ./ex01/quiz-master/exercise
-	./bin/ex01 -csv ./ex01/quiz-master/exercise/problems.csv -limit 10
+	./bin/ex01 -csv ./ex01/quiz-master/exercise/problems.csv -limit 10 -shuffle true
+
+.PHONY: ex02
+ex02: ## ex02
+	@go build -o ./bin/ ./ex02/urlshort-master/exercise
+	./bin/ex02

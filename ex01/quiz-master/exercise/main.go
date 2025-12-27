@@ -4,21 +4,17 @@ import (
 	"encoding/csv"
 	"flag"
 	"fmt"
+	"math/rand"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 )
 
 func main() {
 	csvFileName := flag.String("csv", "problems.csv", "a csv file in the format of 'question,answer'")
-	timeLimit := flag.String("limit", "30", "the time limit for the quiz in seconds")
+	timeLimit := flag.Int64("limit", 30, "the time limit for the quiz in seconds")
+	shuffle := flag.Bool("shuffle", false, "shuffle the quiz questions")
 	flag.Parse()
-
-	timeLimitInt, err := strconv.Atoi(*timeLimit)
-	if err != nil {
-		exit(fmt.Sprintf("Invalid time limit: %s", *timeLimit))
-	}
 
 	file, err := os.Open(*csvFileName)
 	if err != nil {
@@ -33,7 +29,14 @@ func main() {
 	}
 	problems := parseLines(lines)
 
-	timer := time.NewTimer(time.Duration(timeLimitInt) * time.Second)
+	if *shuffle {
+		r := rand.New(rand.NewSource(time.Now().UnixNano()))
+		r.Shuffle(len(problems), func(i, j int) {
+			problems[i], problems[j] = problems[j], problems[i]
+		})
+	}
+
+	timer := time.NewTimer(time.Duration(*timeLimit) * time.Second)
 	correct := 0
 
 problemLoop:
@@ -60,7 +63,8 @@ problemLoop:
 			break problemLoop
 		case answer := <-answerCh:
 			close(done)
-			if answer == p.a {
+			trimAnswer := strings.TrimSpace(answer)
+			if trimAnswer == p.a {
 				fmt.Println("Correct!")
 				correct++
 			} else {

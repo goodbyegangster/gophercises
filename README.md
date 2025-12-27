@@ -8,9 +8,9 @@
 go workspace への module 追加方法。
 
 ```sh
-$ cd path/to/module/directory
-$ go mod init exXX
+$ cd ex0X/XXX/exercise/
+$ go mod init ex0X
 
-$ cd ../../../../
-$ go work use ./path/to/module/directory
+$ cd ../../../
+$ go work use ./ex0X/XXX/exercise/
 ```
